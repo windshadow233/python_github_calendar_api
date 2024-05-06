@@ -57,19 +57,13 @@ def getdata(name):
     return returndata
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        try:
-            parsed_path = urlparse(self.path)
-            print('Path:', parsed_path)
-            query_params = parse_qs(parsed_path.query)
-            print('Params:', query_params)
-            user = query_params.get('user', [None])[0]  # 获取'user'参数的值，如果不存在则默认为None
-            print('User:', user)
-            data = getdata(user) if user else {"error": "User parameter not provided"}
-            self.send_response(200)
-            self.send_header('Access-Control-Allow-Origin', '*')
-            self.send_header('Content-type', 'application/json')
-            self.end_headers()
-            self.wfile.write(json.dumps(data).encode('utf-8'))
-        except Exception as e:
-            self.wfile.write(str(e))
+        parsed_path = urlparse(self.path)
+        query_params = parse_qs(parsed_path.query)
+        user = query_params.get('user', [None])[0]  # 获取'user'参数的值，如果不存在则默认为None
+        data = getdata(user) if user else {"error": "User parameter not provided"}
+        self.send_response(200)
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
+        self.wfile.write(json.dumps(data).encode('utf-8'))
         return
