@@ -71,5 +71,5 @@ class handler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(json.dumps(data).encode('utf-8'))
         except Exception as e:
-            print(e)
+            self.wfile.write(str(e))
         return
